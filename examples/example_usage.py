@@ -20,7 +20,7 @@ class SentimentReport(BaseModel):
 async def main():
     """
     Example demonstrating how to use the gemini-ensemble library
-    for both text synthesis and structured consensus validation.
+    for both text synthesis and structured consensus validation, with Japanese outputs.
     """
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
@@ -38,60 +38,63 @@ async def main():
         "Also, customer service was helpful but took three days to respond.\""
     )
     
-    print("\n1. Running ensemble with n=3 and CriticReducer (Text Synthesis)...")
+    print("\n1. Running ensemble with n=3, CriticReducer, and output_language='Japanese' (Text Synthesis)...")
     try:
         response = await ensemble.generate(
             prompt=prompt,
-            model="gemini-2.5-flash", 
+            model="gemini-3.1-flash-lite", 
             n=3,
-            strategy=CriticReducer()
+            strategy=CriticReducer(),
+            output_language="Japanese"
         )
         print("--- Critic Reducer Response ---")
         print(response.text)
     except Exception as e:
         print(f"Failed to execute: {e}")
     
-    print("\n2. Running ensemble with n=3, VotingReducer, and response_schema...")
+    print("\n2. Running ensemble with n=3, VotingReducer, response_schema, and output_language='Japanese'...")
     try:
         response_structured = await ensemble.generate(
             prompt=prompt,
-            model="gemini-2.5-flash",
+            model="gemini-3.1-flash-lite",
             n=3,
-            strategy=VotingReducer(reducer_model="gemini-2.5-flash"),
-            response_schema=SentimentReport
+            strategy=VotingReducer(reducer_model="gemini-3.1-flash-lite"),
+            response_schema=SentimentReport,
+            output_language="Japanese"
         )
         print("--- Voting Reducer Response (Structured) ---")
         print(response_structured.text)
     except Exception as e:
         print(f"Failed to execute: {e}")
 
-    print("\n3. Running pure functional ensemble with generate_ensemble and reduce_voting...")
+    print("\n3. Running pure functional ensemble with generate_ensemble, reduce_voting, and output_language='Japanese'...")
     try:
         response_functional = await generate_ensemble(
             client=base_client,
             prompt=prompt,
-            model="gemini-2.5-flash",
+            model="gemini-3.1-flash-lite",
             n=3,
             strategy=reduce_voting,
-            response_schema=SentimentReport
+            response_schema=SentimentReport,
+            output_language="Japanese"
         )
         print("--- Functional Voting Reducer Response (Structured) ---")
         print(response_functional.text)
     except Exception as e:
         print(f"Failed to execute: {e}")
 
-    print("\n4. Running pure functional ensemble with output_language='Spanish'...")
+    print("\n4. Running pure functional ensemble with output_language='Japanese'...")
     try:
-        response_spanish = await generate_ensemble(
+        response_japanese = await generate_ensemble(
             client=base_client,
             prompt=prompt,
-            model="gemini-2.5-flash",
+            model="gemini-3.1-flash-lite",
             n=3,
             strategy=reduce_critic,
-            output_language="Spanish"
+            output_language="Japanese"
         )
-        print("--- Critic Reducer Response (in Spanish) ---")
-        print(response_spanish.text)
+        print("--- Critic Reducer Response (in Japanese) ---")
+        print(response_japanese.text)
     except Exception as e:
         print(f"Failed to execute: {e}")
 
