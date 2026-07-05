@@ -19,6 +19,8 @@ eggs/
 .idea/
 *.swp
 *.swo
+.*.swp
+.*.swo
 .DS_Store
 
 # Testing & Coverage
