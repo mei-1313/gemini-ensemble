@@ -44,7 +44,7 @@ async def main():
             prompt=prompt,
             model="gemini-3.1-flash-lite", 
             n=3,
-            strategy=CriticReducer(),
+            strategy=CriticReducer(reducer_model="gemini-3.1-flash-lite"),
             output_language="Japanese"
         )
         print("--- Critic Reducer Response ---")
@@ -76,7 +76,8 @@ async def main():
             n=3,
             strategy=reduce_voting,
             response_schema=SentimentReport,
-            output_language="Japanese"
+            output_language="Japanese",
+            reducer_model="gemini-3.1-flash-lite"
         )
         print("--- Functional Voting Reducer Response (Structured) ---")
         print(response_functional.text)
@@ -91,7 +92,8 @@ async def main():
             model="gemini-3.1-flash-lite",
             n=3,
             strategy=reduce_critic,
-            output_language="Japanese"
+            output_language="Japanese",
+            reducer_model="gemini-3.1-flash-lite"
         )
         print("--- Critic Reducer Response (in Japanese) ---")
         print(response_japanese.text)
