@@ -2,7 +2,14 @@ import asyncio
 import os
 from google import genai
 from pydantic import BaseModel
-from gemini_ensemble import EnsembleClient, CriticReducer, VotingReducer
+from gemini_ensemble import (
+    EnsembleClient,
+    CriticReducer,
+    VotingReducer,
+    generate_ensemble,
+    reduce_critic,
+    reduce_voting,
+)
 
 # Setup a Pydantic model for structured output demonstration
 class SentimentReport(BaseModel):
@@ -55,6 +62,21 @@ async def main():
         )
         print("--- Voting Reducer Response (Structured) ---")
         print(response_structured.text)
+    except Exception as e:
+        print(f"Failed to execute: {e}")
+
+    print("\n3. Running pure functional ensemble with generate_ensemble and reduce_voting...")
+    try:
+        response_functional = await generate_ensemble(
+            client=base_client,
+            prompt=prompt,
+            model="gemini-2.5-flash",
+            n=3,
+            strategy=reduce_voting,
+            response_schema=SentimentReport
+        )
+        print("--- Functional Voting Reducer Response (Structured) ---")
+        print(response_functional.text)
     except Exception as e:
         print(f"Failed to execute: {e}")
 
