@@ -1,0 +1,62 @@
+import asyncio
+import os
+from google import genai
+from pydantic import BaseModel
+from gemini_ensemble import EnsembleClient, CriticReducer, VotingReducer
+
+# Setup a Pydantic model for structured output demonstration
+class SentimentReport(BaseModel):
+    sentiment: str  # positive, negative, or neutral
+    confidence: float
+    reason: str
+
+async def main():
+    """
+    Example demonstrating how to use the gemini-ensemble library
+    for both text synthesis and structured consensus validation.
+    """
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        print("Warning: GEMINI_API_KEY environment variable is not set.")
+        print("Please set it to run actual API calls, or run tests with mock clients.")
+        return
+
+    print("Initializing genai.Client...")
+    base_client = genai.Client()
+    ensemble = EnsembleClient(client=base_client)
+    
+    prompt = (
+        "Analyze the sentiment of the following customer review and provide a rationale:\n"
+        "\"The product build quality is premium and sturdy, but the battery life is slightly below average. "
+        "Also, customer service was helpful but took three days to respond.\""
+    )
+    
+    print("\n1. Running ensemble with n=3 and CriticReducer (Text Synthesis)...")
+    try:
+        response = await ensemble.generate(
+            prompt=prompt,
+            model="gemini-2.5-flash", 
+            n=3,
+            strategy=CriticReducer()
+        )
+        print("--- Critic Reducer Response ---")
+        print(response.text)
+    except Exception as e:
+        print(f"Failed to execute: {e}")
+    
+    print("\n2. Running ensemble with n=3, VotingReducer, and response_schema...")
+    try:
+        response_structured = await ensemble.generate(
+            prompt=prompt,
+            model="gemini-2.5-flash",
+            n=3,
+            strategy=VotingReducer(reducer_model="gemini-2.5-flash"),
+            response_schema=SentimentReport
+        )
+        print("--- Voting Reducer Response (Structured) ---")
+        print(response_structured.text)
+    except Exception as e:
+        print(f"Failed to execute: {e}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
