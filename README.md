@@ -86,6 +86,17 @@ async def main():
     print(response.text)
 ```
 
+#### 3. Command Line Interface (CLI)
+You can run the ensemble directly from your terminal by passing a text file containing the prompt.
+
+```bash
+# Run with a prompt file (uses gemini-3.1-flash-lite and CriticReducer by default)
+gemini-ensemble prompt.txt
+
+# Specify parameters (n=5, output language=Japanese, VotingReducer)
+gemini-ensemble prompt.txt -n 5 -l Japanese -r voting
+```
+
 ---
 
 ## 日本語ドキュメント
@@ -169,4 +180,15 @@ async def main():
         strategy=CriticReducer(reducer_model="gemini-3.1-pro") # 統合のみ上位モデルを指定可能
     )
     print(response.text)
+```
+
+#### 3. コマンドラインインターフェース (CLI)
+プロンプトが記述されたテキストファイルを引数に渡し、ターミナルから直接アンサンブルを実行できます。
+
+```bash
+# プロンプトファイルを渡して実行 (デフォルトで gemini-3.1-flash-lite および CriticReducer が使用されます)
+gemini-ensemble prompt.txt
+
+# オプション指定 (並列数n=5、出力言語=日本語、VotingReducerを使用)
+gemini-ensemble prompt.txt -n 5 -l Japanese -r voting
 ```
