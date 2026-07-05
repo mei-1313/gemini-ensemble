@@ -46,7 +46,7 @@ async def main():
     response = await generate_ensemble(
         client=client,
         prompt=prompt,
-        model="gemini-2.5-flash",
+        model="gemini-3.1-flash-lite",
         n=3,
         strategy=reduce_critic
     )
@@ -56,7 +56,7 @@ async def main():
     structured_response = await generate_ensemble(
         client=client,
         prompt=prompt,
-        model="gemini-2.5-flash",
+        model="gemini-3.1-flash-lite",
         n=3,
         strategy=reduce_voting,
         response_schema=SentimentReport
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### 2. Class-Based Style (Specification Compatible)
+#### 2. Class-Based Style
 You can also use class wrappers to achieve the same result.
 
 ```python
@@ -79,9 +79,9 @@ async def main():
     
     response = await ensemble.generate(
         prompt="Explain quantum physics simply.",
-        model="gemini-2.5-flash",
+        model="gemini-3.1-flash-lite",
         n=5,
-        strategy=CriticReducer() # Can specify a reducer_model inside (e.g. CriticReducer(reducer_model="gemini-2.5-pro"))
+        strategy=CriticReducer() # Can specify a reducer_model inside (e.g. CriticReducer(reducer_model="gemini-3.1-pro"))
     )
     print(response.text)
 ```
@@ -131,7 +131,7 @@ async def main():
     response = await generate_ensemble(
         client=client,
         prompt=prompt,
-        model="gemini-2.5-flash",
+        model="gemini-3.1-flash-lite",
         n=3,
         strategy=reduce_critic
     )
@@ -141,7 +141,7 @@ async def main():
     structured_response = await generate_ensemble(
         client=client,
         prompt=prompt,
-        model="gemini-2.5-flash",
+        model="gemini-3.1-flash-lite",
         n=3,
         strategy=reduce_voting,
         response_schema=SentimentReport
@@ -152,8 +152,8 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### 2. クラスベーススタイル（仕様書互換）
-技術仕様書に準拠した、従来のオブジェクト指向（クラスベース）による記述方法です。
+#### 2. クラスベーススタイル
+オブジェクト指向（クラスベース）による記述方法です。
 
 ```python
 from gemini_ensemble import EnsembleClient, CriticReducer, VotingReducer
@@ -164,9 +164,9 @@ async def main():
     
     response = await ensemble.generate(
         prompt="量子力学についてわかりやすく説明してください。",
-        model="gemini-2.5-flash",
+        model="gemini-3.1-flash-lite",
         n=5,
-        strategy=CriticReducer(reducer_model="gemini-2.5-pro") # 統合のみ上位モデルを指定可能
+        strategy=CriticReducer(reducer_model="gemini-3.1-pro") # 統合のみ上位モデルを指定可能
     )
     print(response.text)
 ```
