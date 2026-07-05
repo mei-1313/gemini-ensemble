@@ -2,6 +2,7 @@ import asyncio
 import os
 from google import genai
 from pydantic import BaseModel
+from dotenv import load_dotenv
 from gemini_ensemble import (
     EnsembleClient,
     CriticReducer,
@@ -22,6 +23,7 @@ async def main():
     Example demonstrating how to use the gemini-ensemble library
     for both text synthesis and structured consensus validation, with Japanese outputs.
     """
+    load_dotenv()
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         print("Warning: GEMINI_API_KEY environment variable is not set.")

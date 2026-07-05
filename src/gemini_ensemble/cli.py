@@ -3,22 +3,10 @@ import asyncio
 import os
 import sys
 from google import genai
+from dotenv import load_dotenv
 
 from .client import generate_ensemble
 from .reducer import reduce_critic, reduce_voting
-
-def _load_env():
-    """
-    Load GEMINI_API_KEY from .env file in the current working directory if available
-    and not already set in the environment.
-    """
-    if not os.environ.get("GEMINI_API_KEY") and os.path.exists(".env"):
-        with open(".env", "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, val = line.split("=", 1)
-                    os.environ[key.strip()] = val.strip().strip('"').strip("'")
 
 
 async def run_cli(args):
@@ -26,7 +14,7 @@ async def run_cli(args):
     Main execution logic for CLI. Reads the prompt from file,
     resolves parameters, runs the ensemble, and prints the result.
     """
-    _load_env()
+    load_dotenv()
     if not os.environ.get("GEMINI_API_KEY"):
         print(
             "Error: GEMINI_API_KEY is not set in environment or .env file.",
