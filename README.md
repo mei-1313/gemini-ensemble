@@ -21,6 +21,13 @@ Clone the repository and install it in editable mode:
 pip install -e .
 ```
 
+### API Key Setup
+You need a Gemini API key. Set it as an environment variable or create a `.env` file in your project root directory:
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+The library and CLI automatically load this key using `python-dotenv`.
+
 ### Usage
 
 #### 1. Pure Functional Style (Recommended)
@@ -116,6 +123,13 @@ gemini-ensemble prompt.txt -n 5 -l Japanese -r voting
 ```bash
 pip install -e .
 ```
+
+### APIキーの設定
+GeminiのAPIキーが必要です。環境変数として設定するか、プロジェクトのルートディレクトリに `.env` ファイルを作成して記述してください。
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+ライブラリおよびCLIは `python-dotenv` を使ってこのキーを自動的にロードします。
 
 ### 使い方
 
