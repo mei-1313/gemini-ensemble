@@ -104,6 +104,14 @@ gemini-ensemble prompt.txt
 gemini-ensemble prompt.txt -n 5 -l Japanese -r voting
 ```
 
+##### CLI Options:
+*   `file` (positional, required): Path to the text file containing the prompt.
+*   `-n` (optional, default: `3`): Number of parallel model instances.
+*   `-m`, `--model` (optional, default: `gemini-3.1-flash-lite`): Base model to run in parallel.
+*   `-r`, `--reducer` (optional, default: `critic`, choices: `critic`, `voting`): Reduction strategy.
+*   `-l`, `--language` (optional): Target language for the final output (e.g. `Japanese`, `English`).
+*   `--reducer-model` (optional): Specific model to use for reduction (defaults to the base model).
+
 ---
 
 ## 日本語ドキュメント
@@ -206,3 +214,11 @@ gemini-ensemble prompt.txt
 # オプション指定 (並列数n=5、出力言語=日本語、VotingReducerを使用)
 gemini-ensemble prompt.txt -n 5 -l Japanese -r voting
 ```
+
+##### CLI オプション一覧:
+*   `file` (位置引数、必須): プロンプトが記述されたテキストファイルのパス。
+*   `-n` (任意、デフォルト: `3`): 並列駆動するベースモデルの数。
+*   `-m`, `--model` (任意、デフォルト: `gemini-3.1-flash-lite`): 並列実行するベースモデル名。
+*   `-r`, `--reducer` (任意、デフォルト: `critic`、選択肢: `critic`, `voting`): 出力結果の統合戦略。
+*   `-l`, `--language` (任意): 最終回答の出力言語 (例: `Japanese`, `English`)。
+*   `--reducer-model` (任意): 最終統合に用いるモデル名 (未指定の場合はベースモデルを使用)。
