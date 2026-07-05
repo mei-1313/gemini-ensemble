@@ -155,3 +155,43 @@ async def test_pure_functional_ensemble():
     reducer_config = reducer_call.kwargs.get("config")
     assert reducer_config.response_schema == DummySchema
     assert reducer_config.temperature == 0.0
+
+
+@pytest.mark.asyncio
+async def test_output_language_propagation():
+    """
+    Test that the output_language parameter is correctly passed to the reducer logic
+    and modifies the system instruction.
+    """
+    mock_client = MagicMock(spec=genai.Client)
+    mock_aio = MagicMock()
+    mock_models = MagicMock()
+    mock_generate = AsyncMock()
+    
+    mock_client.aio = mock_aio
+    mock_aio.models = mock_models
+    mock_models.generate_content = mock_generate
+    
+    mock_response = MagicMock()
+    mock_response.text = "Japanese response text"
+    mock_generate.return_value = mock_response
+
+    # Run functional generate_ensemble directly with output_language="Japanese"
+    response = await generate_ensemble(
+        client=mock_client,
+        prompt="Explain photosynthesis",
+        model="gemini-3.5-flash",
+        n=2,
+        strategy=reduce_critic,
+        output_language="Japanese"
+    )
+    
+    # 2 parallel calls + 1 reducer call = 3 total calls
+    assert mock_generate.call_count == 3
+    assert response == mock_response
+
+    # Verify reducer layer configuration got the language instruction in the system instruction
+    reducer_call = mock_generate.call_args_list[2]
+    reducer_config = reducer_call.kwargs.get("config")
+    
+    assert "You MUST generate the final output in the following language: Japanese" in reducer_config.system_instruction

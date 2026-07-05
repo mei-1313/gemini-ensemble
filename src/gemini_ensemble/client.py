@@ -12,6 +12,7 @@ async def generate_ensemble(
     n: int = 3,
     strategy: Optional[Union[BaseReducer, Callable]] = None,
     response_schema: Optional[Any] = None,
+    output_language: Optional[str] = None,
     **kwargs
 ) -> Any:
     """
@@ -25,6 +26,7 @@ async def generate_ensemble(
         n: The number of parallel base model calls. Must be at least 1.
         strategy: A reduction strategy. Can be a BaseReducer instance, a callable function, or None (defaults to reduce_critic).
         response_schema: Optional Pydantic model class for structured JSON output.
+        output_language: Optional target language for the final output (e.g., 'Japanese', 'English').
         **kwargs: Additional parameters passed to both base and reducer generation calls.
     """
     if n < 1:
@@ -80,6 +82,7 @@ async def generate_ensemble(
             prompt=prompt,
             outputs=outputs,
             response_schema=response_schema,
+            output_language=output_language,
             **kwargs
         )
     elif hasattr(strategy, "reduce"):
@@ -90,16 +93,21 @@ async def generate_ensemble(
             prompt=prompt,
             outputs=outputs,
             response_schema=response_schema,
+            output_language=output_language,
             **kwargs
         )
     elif callable(strategy):
         # If strategy is a pure function
+        # Check if the callable accepts output_language, or pass it anyway as kwargs
+        # To be safe, we can inspect, or call it directly with output_language if we expect it's one of ours.
+        # Since it could be a user-defined function, passing output_language as a kwarg is standard.
         final_response = await strategy(
             client=client,
             fallback_model=model,
             prompt=prompt,
             outputs=outputs,
             response_schema=response_schema,
+            output_language=output_language,
             **kwargs
         )
     else:
@@ -124,6 +132,7 @@ class EnsembleClient:
         n: int = 3,
         strategy: Optional[Union[BaseReducer, Callable]] = None,
         response_schema: Optional[Any] = None,
+        output_language: Optional[str] = None,
         **kwargs
     ) -> Any:
         return await generate_ensemble(
@@ -133,5 +142,6 @@ class EnsembleClient:
             n=n,
             strategy=strategy,
             response_schema=response_schema,
+            output_language=output_language,
             **kwargs
         )

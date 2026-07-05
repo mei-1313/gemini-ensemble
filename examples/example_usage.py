@@ -80,5 +80,20 @@ async def main():
     except Exception as e:
         print(f"Failed to execute: {e}")
 
+    print("\n4. Running pure functional ensemble with output_language='Spanish'...")
+    try:
+        response_spanish = await generate_ensemble(
+            client=base_client,
+            prompt=prompt,
+            model="gemini-2.5-flash",
+            n=3,
+            strategy=reduce_critic,
+            output_language="Spanish"
+        )
+        print("--- Critic Reducer Response (in Spanish) ---")
+        print(response_spanish.text)
+    except Exception as e:
+        print(f"Failed to execute: {e}")
+
 if __name__ == "__main__":
     asyncio.run(main())
