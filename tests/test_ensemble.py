@@ -22,7 +22,7 @@ async def test_ensemble_client_temperature_scattering():
     
     mock_client.aio = mock_aio
     mock_aio.models = mock_models
-    mock_models.generate = mock_generate
+    mock_models.generate_content = mock_generate
     
     mock_response = MagicMock()
     mock_response.text = "Result text"
@@ -68,7 +68,7 @@ async def test_ensemble_client_custom_reducer_and_schema():
     
     mock_client.aio = mock_aio
     mock_aio.models = mock_models
-    mock_models.generate = mock_generate
+    mock_models.generate_content = mock_generate
     
     mock_response = MagicMock()
     mock_response.text = '{"score": 0.95}'

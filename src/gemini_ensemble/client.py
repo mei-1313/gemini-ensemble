@@ -74,7 +74,7 @@ class EnsembleClient:
             
             # Pass all arguments except config/response_schema if any are in kwargs
             # Using client.aio for async execution
-            task = self.client.aio.models.generate(
+            task = self.client.aio.models.generate_content(
                 model=model,
                 contents=prompt,
                 config=config

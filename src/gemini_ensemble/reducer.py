@@ -92,7 +92,7 @@ class VotingReducer(BaseReducer):
             
         config = types.GenerateContentConfig(**config_params)
         
-        response = await client.aio.models.generate(
+        response = await client.aio.models.generate_content(
             model=model_name,
             contents=user_content,
             config=config
@@ -154,7 +154,7 @@ class CriticReducer(BaseReducer):
             
         config = types.GenerateContentConfig(**config_params)
         
-        response = await client.aio.models.generate(
+        response = await client.aio.models.generate_content(
             model=model_name,
             contents=user_content,
             config=config
