@@ -1,5 +1,7 @@
 # gemini-ensemble
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A high-performance LLM ensemble control library for Python based on the Google `google-genai` SDK.  
 Googleの `google-genai` SDKをベースに構築された、Python向けの高性能LLMアンサンブル制御ライブラリ。
 
@@ -26,7 +28,7 @@ python3 -m venv .venv
 # Activate the virtual environment
 source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
 
-# Install in editable mode
+# Install the package
 pip install -e .
 ```
 
@@ -120,6 +122,9 @@ gemini-ensemble prompt.txt -n 5 -l Japanese -r voting
 *   `-r`, `--reducer` (optional, default: `critic`, choices: `critic`, `voting`): Reduction strategy.
 *   `-l`, `--language` (optional): Target language for the final output (e.g. `Japanese`, `English`).
 *   `--reducer-model` (optional): Specific model to use for reduction (defaults to the base model).
+
+### License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -240,3 +245,6 @@ gemini-ensemble prompt.txt -n 5 -l Japanese -r voting
 *   `-r`, `--reducer` (任意、デフォルト: `critic`、選択肢: `critic`, `voting`): 出力結果の統合戦略。
 *   `-l`, `--language` (任意): 最終回答の出力言語 (例: `Japanese`, `English`)。
 *   `--reducer-model` (任意): 最終統合に用いるモデル名 (未指定の場合はベースモデルを使用)。
+
+### ライセンス
+このプロジェクトはMITライセンスの下で公開されています。詳細は [LICENSE](LICENSE) ファイルをご覧ください。
